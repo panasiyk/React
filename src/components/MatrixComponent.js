@@ -12,8 +12,7 @@ class MatrixComponent extends Component{
                         incomingData={this.props.incomingData}
                         increaseAmount={this.props.increaseAmount}
                         changeAverageBlock={this.props.changeAverageBlock}
-                        changeSumBlock={this.props.changeSumBlock}
-                        getObjectById={this.props.getObjectById}/>: null}
+                        changeSumBlock={this.props.changeSumBlock}/>: null}
 
                 {this.props.initialDataForTable.isAddTableShowed?
                     <button className="button" onClick={this.props.AddTable}>AddTable</button>: null}

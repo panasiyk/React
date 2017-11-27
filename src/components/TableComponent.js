@@ -14,13 +14,13 @@ class TableComponent extends Component{
                             Data.arrayOfObjects[i].map((element, j)=>
                                 <td key={Data.arrayOfObjects[i][j].id}
                                     id={Data.arrayOfObjects[i][j].id}
-                                    style={{background: this.props.illuminationTable(i,j,Data)}}
-                                    onClick={this.props.onCellClick}
-                                    onMouseOver={this.props.onMouseOverCell}
+                                    style={{background: this.props.illuminationTable(i,j)}}
+                                    onClick={(e)=>this.props.onCellClick(e,i,j)}
+                                    onMouseOver={(e)=>this.props.onMouseOverCell(e,i,j)}
                                     onMouseOut={this.props.onMouseOutCell}
                                 >
                                     {
-                                        this.props.getPercent(i,j,Data)
+                                        this.props.getPercent(i,j)
                                     }
                                 </td>
                             )

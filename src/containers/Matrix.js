@@ -17,7 +17,6 @@ class Matrix extends Component {
         this.increaseDataObjectAmount = this.increaseDataObjectAmount.bind(this);
         this.fillAverageArrayWithData = this.fillAverageArrayWithData.bind(this);
         this.fillSumBlockWithData = this.fillSumBlockWithData.bind(this);
-        this.getDataObjectById = this.getDataObjectById.bind(this);
         this.AddTable = this.AddTable.bind(this);
         this.AddNewRow = this.AddNewRow.bind(this);
         this.DeleteRow = this.DeleteRow.bind(this);
@@ -140,24 +139,14 @@ class Matrix extends Component {
         obj.id=Math.floor(Math.random()*100000);
         return obj;
     }
-    increaseDataObjectAmount(id){
-        let obj = this.getDataObjectById(id);
-        let a= this.state.arrayOfObjects;
-        a[obj]=obj.amount++;
-        this.setState({arrayOfObjects: a});
+    increaseDataObjectAmount(i,j){
+        this.setState((prevState) => {
+            let newIds = [...prevState.arrayOfObjects];
+            newIds[i][j].amount++;
+            return {arrayOfObjects: newIds};
+        });
     }
 
-    getDataObjectById (id){
-        let result="";
-        for( let i=0; i<this.props.initialData.rowsCount; i++){
-            for(let j=0; j<this.props.initialData.columnsCount; j++){
-                if(this.state.arrayOfObjects[i][j].id==id){
-                    result=this.state.arrayOfObjects[i][j];
-                }
-            }
-        }
-        return result;
-    };
 
     render() {
         return (
@@ -166,7 +155,6 @@ class Matrix extends Component {
                              increaseAmount={this.increaseDataObjectAmount}
                              changeAverageBlock={this.fillAverageArrayWithData}
                              changeSumBlock={this.fillSumBlockWithData}
-                             getObjectById={this.getDataObjectById}
                              AddTable={this.AddTable}
                              AddNewRow={this.AddNewRow}
                              DeleteRow={this.DeleteRow}/>

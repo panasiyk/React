@@ -3,110 +3,63 @@ import TableComponent from '../components/TableComponent';
 import '../App.css';
 
 class Table extends Component{
-    arrayOfObjectsClone;
-    arrayOfIdIlluminationOfElements;
     arrayOfElementForIllumination;
-
     constructor(props) {
         super(props);
         this.state={
             rowIndexHover:-1,
             flag: false
         };
-        this.createCloneArray();
         this.onCellClick = this.onCellClick.bind(this);
         this.onMouseOverSumBlock = this.onMouseOverSumBlock.bind(this);
         this.illuminationTable = this.illuminationTable.bind(this);
-        this.onCellClick = this.onCellClick.bind(this);
         this.onMouseOverCell = this.onMouseOverCell.bind(this);
         this.onMouseOutCell = this.onMouseOutCell.bind(this);
         this.onMouseOutSumBlock = this.onMouseOutSumBlock.bind(this);
         this.getPercent = this.getPercent.bind(this);
     }
 
-    componentWillReceiveProps(newProps){
-        this.createCloneArray(newProps);
-    }
-
-    onCellClick(event){
-        let id = event.target.id;
-        this.props.increaseAmount(id);
+    onCellClick(event,i,j){
+        this.props.increaseAmount(i,j);
         this.onMouseOutCell(event);
-        this.onMouseOverCell(event);
+        this.onMouseOverCell(event,this.props.initialDataForTable.arrayOfObjects[i][j]);
         this.props.changeAverageBlock();
         this.props.changeSumBlock();
 
     }
-    onMouseOverCell(event){
-        let obj = this.props.getObjectById(event.target.id);
-        this.deleteAmountFromArray(obj.id);
-        this.findNearestElementInArray(obj.amount);
-        this.createCloneArray();
-        this.deleteAmountFromArray(obj.id);
-        this.createTableIdArrayForIdIllumination();
+    onMouseOverCell(event,i,j){
+        this.findNearestElementInArray(i,j);
         this.setState({flag: true});
     }
 
-    deleteAmountFromArray(id) {
-        for(let i = 0; i <this.props.incomingData.rowsCount*this.props.incomingData.columnsCount; i++){
-            if (this.arrayOfObjectsClone[i].id == id) {
-                this.arrayOfObjectsClone.splice(i, 1);
-                break;
-            }
-        }
-    }
-
-    findNearestElementInArray(amount) {
-        let i=0;
+    findNearestElementInArray(i,j) {
+        let arrayOfObjectsElement = this.props.initialDataForTable.arrayOfObjects[i][j];
         let minDiff=1000;
         let result;
         let resultID;
-        this.arrayOfElementForIllumination=[];
-        if(this.props.incomingData.numberForIllumination<this.arrayOfObjectsClone.length){
-            while(this.arrayOfElementForIllumination.length!=this.props.incomingData.numberForIllumination){
-                for(i in this.arrayOfObjectsClone){
-                    let min = Math.abs(amount - this.arrayOfObjectsClone[i].amount);
-                    if (min <= minDiff) {
-                        minDiff = min;
-                        result = this.arrayOfObjectsClone[i].amount;
-                        resultID = this.arrayOfObjectsClone[i].id;
-                    }
-                }
-                this.arrayOfElementForIllumination.push(result);
-                this.deleteAmountFromArray(resultID);
+        let arrayOfElementForIllumination=[];
+            while(arrayOfElementForIllumination.length != this.props.incomingData.numberForIllumination){
+                this.props.initialDataForTable.arrayOfObjects.map((row) =>{
+                    row.map((element) => {
+                         if ((arrayOfElementForIllumination.indexOf(element.id) === -1) && (arrayOfObjectsElement.id !== element.id )) {
+                             let min = Math.abs(arrayOfObjectsElement.amount - element.amount);
+                             if (min <= minDiff) {
+                                 minDiff = min;
+                                 result = element.amount;
+                                 resultID = element.id;
+                             }
+                         }
+                     });
+                });
+                arrayOfElementForIllumination.push(resultID);
                 minDiff=1000;
             }
-        }
+            this.arrayOfElementForIllumination=[...arrayOfElementForIllumination];
     }
 
-
-    createCloneArray(newProps) {
-        this.arrayOfObjectsClone=[];
-        newProps=newProps || this.props;
-        for(let i=0; i<newProps.incomingData.rowsCount; i++){
-            for(let j=0; j<newProps.incomingData.columnsCount; j++){
-                this.arrayOfObjectsClone.push(this.props.initialDataForTable.arrayOfObjects[i][j])
-            }
-        }
-    }
-
-    createTableIdArrayForIdIllumination() {
-        this.arrayOfIdIlluminationOfElements=[];
-        let k=0;
-        for (let h=0; h<=this.props.incomingData.numberForIllumination; h++){
-            for(let i = 0; i <this.props.incomingData.rowsCount*this.props.incomingData.columnsCount-1; i++){
-                if (this.arrayOfObjectsClone[i].amount == this.arrayOfElementForIllumination[k]) {
-                    this.arrayOfIdIlluminationOfElements.push(this.arrayOfObjectsClone[i].id);
-                    k++;
-                }
-            }
-        }
-    }
 
     onMouseOutCell(){
-        this.createCloneArray();
         this.setState({flag: false});
-
     }
     onMouseOverSumBlock(event,i){
         this.setState({rowIndexHover:i});
@@ -117,27 +70,30 @@ class Table extends Component{
 
     }
 
-    getPercent(i,j,Data){
+    getPercent(i,j){
         return (i===this.state.rowIndexHover) ?
-            ((Data.arrayOfObjects[i][j].amount/Data.arrayForSumBlock[i])* 100).toFixed(2) + "%" :
-            Data.arrayOfObjects[i][j].amount
+            ((this.props.initialDataForTable.arrayOfObjects[i][j].amount/
+                this.props.initialDataForTable.arrayForSumBlock[i])* 100).toFixed(2) + "%" :
+            this.props.initialDataForTable.arrayOfObjects[i][j].amount
     }
-    illuminationTable(i, j, Data){
-        return (this.state.flag)? this.illuminationNearest(i,j,Data) :this.illuminationPercent(i,j,Data)
+    illuminationTable(i, j){
+        return (this.state.flag)? this.illuminationNearest(i,j) :this.illuminationPercent(i,j)
     }
 
-    illuminationPercent(i, j, Data){
-        return (i===this.state.rowIndexHover) ?
-            ' linear-gradient(to right, #e50b2f '+((Data.arrayOfObjects[i][j].amount/
-            Data.arrayForSumBlock[i])* 100).toFixed(2)+'%, #AFCDE7 0%)'  :  ''
-    }
-    illuminationNearest(i, j, Data){
-        for (let k = 0; k < this.arrayOfIdIlluminationOfElements.length; k++) {
-            if(Data.arrayOfObjects[i][j].id == this.arrayOfIdIlluminationOfElements[k]){
+    illuminationNearest(i, j){
+        for (let k = 0; k < this.arrayOfElementForIllumination.length; k++) {
+            if(this.props.initialDataForTable.arrayOfObjects[i][j].id === this.arrayOfElementForIllumination[k]){
                 return 'linear-gradient(to right, #e50b2f 100%, #e50b2f 0%)';}
         }
 
     }
+
+    illuminationPercent(i, j){
+        return (i===this.state.rowIndexHover) ?
+            ' linear-gradient(to right, #e50b2f '+((this.props.initialDataForTable.arrayOfObjects[i][j].amount/
+            this.props.initialDataForTable.arrayForSumBlock[i])* 100).toFixed(2)+'%, #AFCDE7 0%)'  :  ''
+    }
+
 
     render (){
         return(
