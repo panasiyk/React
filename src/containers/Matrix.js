@@ -24,17 +24,18 @@ class Matrix extends Component {
 
 
     AddTable(){
+
         if((this.props.initialData.rowsCount!=="")&&
             (this.props.initialData.columnsCount!=="")&&
             (this.props.initialData.numberForIllumination!=="")){
-            this.setState({
-                isAddTableShowed:false,
-                isNewRowShowed:true,
-                isDeleteRowShowed: true});
             this.createMatrix();
             this.fillAverageArrayWithData();
             this.fillSumBlockWithData();
-            this.createTable();
+            this.setState({
+                isAddTableShowed:false,
+                isNewRowShowed:true,
+                isDeleteRowShowed: true,
+                isTableShowed: true});
         }
 
     }
@@ -114,6 +115,7 @@ class Matrix extends Component {
 
 
     fillSumBlockWithData(){
+
         this.setState((prevState, props) => {
             let arrSum=[];
             for (let i=0; i<props.initialData.rowsCount; i++){
@@ -130,9 +132,6 @@ class Matrix extends Component {
         });
     }
 
-    createTable(){
-        this.setState({isTableShowed: true});
-    }
     static createDatObject(){
         let obj = {amount: '', id: ''};
         obj.amount = Math.floor(Math.random()*(1000-100))+100;

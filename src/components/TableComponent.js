@@ -23,6 +23,7 @@ class TableComponent extends Component{
                                         this.props.getPercent(i,j)
                                     }
                                 </td>
+
                             )
                         }
                             <td key={i}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TableComponent from '../components/TableComponent';
+
 import '../App.css';
 
 class Table extends Component{
@@ -22,7 +23,7 @@ class Table extends Component{
     onCellClick(event,i,j){
         this.props.increaseAmount(i,j);
         this.onMouseOutCell(event);
-        this.onMouseOverCell(event,this.props.initialDataForTable.arrayOfObjects[i][j]);
+        this.onMouseOverCell(event,i,j);
         this.props.changeAverageBlock();
         this.props.changeSumBlock();
 
@@ -85,7 +86,6 @@ class Table extends Component{
             if(this.props.initialDataForTable.arrayOfObjects[i][j].id === this.arrayOfElementForIllumination[k]){
                 return 'linear-gradient(to right, #e50b2f 100%, #e50b2f 0%)';}
         }
-
     }
 
     illuminationPercent(i, j){
