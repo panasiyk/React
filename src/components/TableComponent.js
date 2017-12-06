@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AverageRow from './AverageRow.js';
+import Row from './Row.js';
 import '../App.css';
 
 class TableComponent extends Component{
@@ -10,30 +11,19 @@ class TableComponent extends Component{
                 <tbody>
                 {
                     Data.arrayOfObjects.map((element, i) =>
-                        <tr key={i}>{
-                            Data.arrayOfObjects[i].map((element, j)=>
-                                <td key={Data.arrayOfObjects[i][j].id}
-                                    id={Data.arrayOfObjects[i][j].id}
-                                    style={{background: this.props.illuminationTable(i,j)}}
-                                    onClick={(e)=>this.props.onCellClick(e,i,j)}
-                                    onMouseOver={(e)=>this.props.onMouseOverCell(e,i,j)}
-                                    onMouseOut={this.props.onMouseOutCell}
-                                >
-                                    {
-                                        this.props.getPercent(i,j)
-                                    }
-                                </td>
-
-                            )
-                        }
-                            <td key={i}
-                                onMouseOver={(e)=>this.props.onMouseOverSumBlock(e,i)}
-                                onMouseOut={this.props.onMouseOutSumBlock}>
-                                {Data.arrayForSumBlock[i]}
-                            </td>
-                        </tr>)
+                        <Row initialDataForTable={this.props.initialDataForTable}
+                             i={i}
+                             key={Data.arrayOfObjects[i][0].id}
+                             illuminationTable={this.props.illuminationTable}
+                             onCellClick={this.props.onCellClick}
+                             onMouseOverCell={this.props.onMouseOverCell}
+                             getPercent={this.props.getPercent}
+                             onMouseOutCell={this.props.onMouseOutCell}/>
+                    )
                 }
-                <AverageRow initialDataForTable={Data}/>
+
+
+
                 </tbody>
             </table>
         );

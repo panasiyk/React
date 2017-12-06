@@ -135,7 +135,7 @@ class Matrix extends Component {
     static createDatObject(){
         let obj = {amount: '', id: ''};
         obj.amount = Math.floor(Math.random()*(1000-100))+100;
-        obj.id=Math.floor(Math.random()*100000);
+        obj.id=Math.floor(Math.random()*100000000);
         return obj;
     }
     increaseDataObjectAmount(i,j){

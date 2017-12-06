@@ -34,6 +34,7 @@ class Table extends Component{
     }
 
     findNearestElementInArray(i,j) {
+        console.time("you");
         let arrayOfObjectsElement = this.props.initialDataForTable.arrayOfObjects[i][j];
         let minDiff=1000;
         let result;
@@ -56,6 +57,7 @@ class Table extends Component{
                 minDiff=1000;
             }
             this.arrayOfElementForIllumination=[...arrayOfElementForIllumination];
+            console.timeEnd("you");
     }
 
 
@@ -82,16 +84,18 @@ class Table extends Component{
     }
 
     illuminationNearest(i, j){
-        for (let k = 0; k < this.arrayOfElementForIllumination.length; k++) {
-            if(this.props.initialDataForTable.arrayOfObjects[i][j].id === this.arrayOfElementForIllumination[k]){
-                return 'linear-gradient(to right, #e50b2f 100%, #e50b2f 0%)';}
-        }
+        let isElinArray = this.arrayOfElementForIllumination.find((element)=>{
+            if (this.props.initialDataForTable.arrayOfObjects[i][j].id!== element) return false;
+            return element;
+        });
+        if(isElinArray !== undefined){return 'linear-gradient(to right, #e50b2f 100%, #e50b2f 0%)';}
     }
 
     illuminationPercent(i, j){
-        return (i===this.state.rowIndexHover) ?
-            ' linear-gradient(to right, #e50b2f '+((this.props.initialDataForTable.arrayOfObjects[i][j].amount/
-            this.props.initialDataForTable.arrayForSumBlock[i])* 100).toFixed(2)+'%, #AFCDE7 0%)'  :  ''
+        if (i===this.state.rowIndexHover){
+            return( ' linear-gradient(to right, #e50b2f '+((this.props.initialDataForTable.arrayOfObjects[i][j].amount/
+                this.props.initialDataForTable.arrayForSumBlock[i])* 100).toFixed(2)+'%, #AFCDE7 0%)')
+        }
     }
 
 
