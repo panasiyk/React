@@ -18,12 +18,12 @@ class TableComponent extends Component{
                              onCellClick={this.props.onCellClick}
                              onMouseOverCell={this.props.onMouseOverCell}
                              getPercent={this.props.getPercent}
-                             onMouseOutCell={this.props.onMouseOutCell}/>
+                             onMouseOutCell={this.props.onMouseOutCell}
+                             onMouseOverSumBlock={this.props.onMouseOverSumBlock}
+                             onMouseOutSumBlock={this.props.onMouseOutSumBlock}/>
                     )
                 }
-
-
-
+                <AverageRow initialDataForTable={Data}/>
                 </tbody>
             </table>
         );

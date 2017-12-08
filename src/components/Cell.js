@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import '../App.css';
 
 class Cell extends Component{
-    shouldComponentUpdate() {
-        return false;
-    }
+    // shouldComponentUpdate(nextProps) {
+    //     return nextProps !== this.props;
+    // }
 
     render (){
         let Data =this.props.initialDataForTable;

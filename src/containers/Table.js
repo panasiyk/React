@@ -5,6 +5,8 @@ import '../App.css';
 
 class Table extends Component{
     arrayOfElementForIllumination;
+    numberForIllumination = parseInt(this.props.incomingData.numberForIllumination);
+
     constructor(props) {
         super(props);
         this.state={
@@ -33,31 +35,72 @@ class Table extends Component{
         this.setState({flag: true});
     }
 
+    findRightNumberStart(index){
+        if((index-this.numberForIllumination)<0){
+            return 0
+        }
+        return index-this.numberForIllumination;
+    }
+
+    findRightNumberEnd(index){
+        if((index+this.numberForIllumination)>(this.props.incomingData.rowsCount*this.props.incomingData.columnsCount)){
+            return (this.props.incomingData.rowsCount*this.props.incomingData.columnsCount+1)
+        }
+        let a = index+this.numberForIllumination+1;
+        return index+this.numberForIllumination+1
+    }
+    deleteFromArray(lenerArrayOfObjects, id){
+        for(let i = 0; i <lenerArrayOfObjects.length; i++){
+            if(lenerArrayOfObjects[i].id === id){
+                lenerArrayOfObjects.splice(i,1);
+                break;
+            }
+        }
+    };
+
     findNearestElementInArray(i,j) {
         console.time("you");
-        let arrayOfObjectsElement = this.props.initialDataForTable.arrayOfObjects[i][j];
-        let minDiff=1000;
-        let result;
-        let resultID;
-        let arrayOfElementForIllumination=[];
-            while(arrayOfElementForIllumination.length != this.props.incomingData.numberForIllumination){
-                this.props.initialDataForTable.arrayOfObjects.map((row) =>{
-                    row.map((element) => {
-                         if ((arrayOfElementForIllumination.indexOf(element.id) === -1) && (arrayOfObjectsElement.id !== element.id )) {
-                             let min = Math.abs(arrayOfObjectsElement.amount - element.amount);
-                             if (min <= minDiff) {
-                                 minDiff = min;
-                                 result = element.amount;
-                                 resultID = element.id;
-                             }
-                         }
-                     });
-                });
-                arrayOfElementForIllumination.push(resultID);
-                minDiff=1000;
-            }
-            this.arrayOfElementForIllumination=[...arrayOfElementForIllumination];
-            console.timeEnd("you");
+        let ElementForIllumination = [];
+        let givenElement = this.props.initialDataForTable.arrayOfObjects[i][j];
+        let lenerArrayOfObjects = this.props.initialDataForTable.arrayOfObjects.reduce((sum, elem) => sum.concat(elem));
+        lenerArrayOfObjects = lenerArrayOfObjects.sort((prev, curr) => prev.amount - curr.amount);
+        let index = lenerArrayOfObjects.findIndex(item => item.id === givenElement.id);
+        lenerArrayOfObjects = lenerArrayOfObjects.slice(this.findRightNumberStart(index),this.findRightNumberEnd(index));
+        this.deleteFromArray(lenerArrayOfObjects,givenElement.id);
+        while(ElementForIllumination.length !== this.numberForIllumination){
+            let nearestElement = lenerArrayOfObjects.reduce((prev, curr) =>
+                (Math.abs(curr.amount - givenElement.amount) < Math.abs(prev.amount - givenElement.amount) ? curr : prev)
+            );
+            ElementForIllumination.push(nearestElement.id);
+            this.deleteFromArray(lenerArrayOfObjects,nearestElement.id);
+        }
+        this.arrayOfElementForIllumination=[...ElementForIllumination];
+        console.timeEnd("you");
+
+        // console.time("you");
+        // let arrayOfObjectsElement = this.props.initialDataForTable.arrayOfObjects[i][j];
+        // let minDiff=1000;
+        // let result;
+        // let resultID;
+        // let arrayOfElementForIllumination=[];
+        //     while(arrayOfElementForIllumination.length != this.props.incomingData.numberForIllumination){
+        //         this.props.initialDataForTable.arrayOfObjects.map((row) =>{
+        //             row.map((element) => {
+        //                  if ((arrayOfElementForIllumination.indexOf(element.id) === -1) && (arrayOfObjectsElement.id !== element.id )) {
+        //                      let min = Math.abs(arrayOfObjectsElement.amount - element.amount);
+        //                      if (min <= minDiff) {
+        //                          minDiff = min;
+        //                          result = element.amount;
+        //                          resultID = element.id;
+        //                      }
+        //                  }
+        //              });
+        //         });
+        //         arrayOfElementForIllumination.push(resultID);
+        //         minDiff=1000;
+        //     }
+        //     this.arrayOfElementForIllumination=[...arrayOfElementForIllumination];
+        //     console.timeEnd("you");
     }
 
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import Cell from './Cell.js';
+import SumCell from './SumCell.js';
 
 class Row extends Component{
 
@@ -21,6 +22,11 @@ class Row extends Component{
 
                 )
             }
+                <SumCell key={Data.arrayOfObjects[this.props.i][0].id}
+                         onMouseOverSumBlock={this.props.onMouseOverSumBlock}
+                         onMouseOutSumBlock={this.props.onMouseOutSumBlock}
+                         initialDataForTable={this.props.initialDataForTable}
+                         i={this.props.i}/>
             </tr>
         );
     }

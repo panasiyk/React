@@ -6,9 +6,9 @@ class App extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            rowsCount: "10",
-            columnsCount: "10" ,
-            numberForIllumination: "10"
+            rowsCount: "",
+            columnsCount: "" ,
+            numberForIllumination: ""
         };
 
         this.onChangeInput = this.onChangeInput.bind(this);

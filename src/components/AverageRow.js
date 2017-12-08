@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import '../App.css';
 
-class AverageRow extends Component{
+class AverageRow extends PureComponent{
     render (){
         return(
             <tr>
