@@ -7,7 +7,6 @@ class Matrix extends Component {
         this.state = {
             arrayOfObjects:"",
             arrayForAverageBlock:"",
-            arrayOfObjectsClone:"",
             arrayForSumBlock:"",
             isTableShowed: false,
             isAddTableShowed: true,
