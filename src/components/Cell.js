@@ -12,11 +12,8 @@ class Cell extends Component{
             <td key={Data.arrayOfObjects[this.props.i][this.props.j].id}
                 id={Data.arrayOfObjects[this.props.i][this.props.j].id}
                 style={{background: this.props.arrayOfColorsForillumination}}
-
                 onClick={(e)=>this.props.onCellClick(e,this.props.i,this.props.j)}
-                onMouseOver={(e)=>this.props.onMouseOverCell(e,this.props.i,this.props.j)}
-                onMouseOut={this.props.onMouseOutCell}
-            >
+                onMouseOver={(e)=>this.props.onMouseOverCell(e,this.props.i,this.props.j)}>
                 {
                     this.props.getPercent(this.props.i,this.props.j)
                 }

@@ -8,7 +8,7 @@ class TableComponent extends Component{
     render (){
         let Data =this.props.initialDataForTable;
         return(
-            <table>
+            <table onMouseLeave={this.props.onMouseOutCell}>
                 <tbody>
                 {
                     Data.arrayOfObjects.map((element, i) =>
@@ -19,7 +19,6 @@ class TableComponent extends Component{
                               onCellClick={this.props.onCellClick}
                               onMouseOverCell={this.props.onMouseOverCell}
                               getPercent={this.props.getPercent}
-                              onMouseOutCell={this.props.onMouseOutCell}
                               arrayOfColorsForillumination={this.props.arrayOfColorsForillumination[i][j]}
                               i={i}
                               j={j}/>
@@ -28,7 +27,6 @@ class TableComponent extends Component{
                 }
                     <SumCell key={Data.arrayOfObjects[i][0].id}
                     onMouseOverSumBlock={this.props.onMouseOverSumBlock}
-                    onMouseOutSumBlock={this.props.onMouseOutSumBlock}
                     initialDataForTable={this.props.initialDataForTable}
                     i={i}/>
                     </tr>
@@ -36,7 +34,8 @@ class TableComponent extends Component{
 
                     )
                 }
-                <AverageRow initialDataForTable={Data}/>
+                <AverageRow initialDataForTable={Data}
+                            onMouseOutCell={this.props.onMouseOutCell}/>
                 </tbody>
             </table>
         );

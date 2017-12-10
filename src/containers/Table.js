@@ -20,7 +20,6 @@ class Table extends Component{
         this.onMouseOverSumBlock = this.onMouseOverSumBlock.bind(this);
         this.onMouseOverCell = this.onMouseOverCell.bind(this);
         this.onMouseOutCell = this.onMouseOutCell.bind(this);
-        this.onMouseOutSumBlock = this.onMouseOutSumBlock.bind(this);
         this.getPercent = this.getPercent.bind(this);
     }
     createArrayOfColorsForillumination() {
@@ -30,6 +29,14 @@ class Table extends Component{
                 this.arrayOfColorsForillumination[i][j] = '';
             }
         }
+    }
+
+    componentWillReceiveProps(nexProps){
+        let row = [];
+        for (let i = 0; i < this.props.incomingData.rowsCount; i++) {
+            row[i] = '';
+        }
+        this.arrayOfColorsForillumination.push(row);
     }
 
     onCellClick(event,i,j){
@@ -43,7 +50,7 @@ class Table extends Component{
     onMouseOverCell(event,i,j){
         this.findNearestElementInArray(i,j);
         this.fillingArrayOfColorsForillumination();
-        this.setState({flag: true});
+        this.setState({flag: true,rowIndexHover:-1});
     }
 
     findRightNumberStart(index){
@@ -100,12 +107,11 @@ class Table extends Component{
                 else{this.arrayOfColorsForillumination[i][j] = ''}
             }
         }
-        console.log('a');
     }
 
     onMouseOutCell(){
         this.takeBackColor();
-        this.setState({flag: false});
+        this.setState({flag: false,rowIndexHover:-1});
     }
     takeBackColor(){
         for(let i=0; i<this.props.initialDataForTable.arrayOfObjects.length; i++){
@@ -129,16 +135,10 @@ class Table extends Component{
     }
 
     onMouseOverSumBlock(event,rowIndexHover){
+        this.takeBackColor();
         this.fillingArrayOfColorsForPercentillumination(rowIndexHover);
         this.setState({rowIndexHover:rowIndexHover});
     }
-
-    onMouseOutSumBlock(event){
-        this.takeBackColor();
-        this.setState({rowIndexHover:-1});
-
-    }
-
     getPercent(i,j){
         return (i===this.state.rowIndexHover) ?
             ((this.props.initialDataForTable.arrayOfObjects[i][j].amount/
@@ -153,9 +153,8 @@ class Table extends Component{
                            onMouseOverCell={this.onMouseOverCell}
                            getPercent={this.getPercent}
                            onMouseOverSumBlock={this.onMouseOverSumBlock}
-                           onMouseOutSumBlock={this.onMouseOutSumBlock}
                            onMouseOutCell={this.onMouseOutCell}
-                            arrayOfColorsForillumination={this.arrayOfColorsForillumination}/>
+                           arrayOfColorsForillumination={this.arrayOfColorsForillumination}/>
         );
     }
 

@@ -7,11 +7,14 @@ class AverageRow extends PureComponent{
             <tr>
                 {
                     this.props.initialDataForTable.arrayForAverageBlock.map((element, i)=>
-                        <td key={i}>
+                        <td key={i}
+                            onMouseOver={this.props.onMouseOutCell}
+                        >
                             {this.props.initialDataForTable.arrayForAverageBlock[i]}
                         </td>
                     )
                 }
+                <td className="cont" onMouseOver={this.props.onMouseOutCell}/>
             </tr>
         );
     }
