@@ -41,7 +41,6 @@ class Table extends Component{
 
     onCellClick(event,i,j){
         this.props.increaseAmount(i,j);
-        this.onMouseOutCell(event);
         this.onMouseOverCell(event,i,j);
         this.props.changeAverageBlock();
         this.props.changeSumBlock();
@@ -148,7 +147,6 @@ class Table extends Component{
     render (){
         return(
             <TableComponent initialDataForTable={this.props.initialDataForTable}
-                           illuminationTable={this.illuminationTable}
                            onCellClick={this.onCellClick}
                            onMouseOverCell={this.onMouseOverCell}
                            getPercent={this.getPercent}
