@@ -7,6 +7,7 @@ class Table extends Component{
     arrayOfElementForIllumination;
     arrayOfColorsForillumination = [];
     numberForIllumination = parseInt(this.props.incomingData.numberForIllumination);
+    cache = [];
 
     constructor(props) {
         super(props);
@@ -97,16 +98,38 @@ class Table extends Component{
 
     fillingArrayOfColorsForillumination(){
         for(let i=0; i<this.props.initialDataForTable.arrayOfObjects.length; i++){
+            let c = false;
             for(let j=0; j<this.props.initialDataForTable.arrayOfObjects[i].length; j++) {
+
+
+
                 let isElinArray = this.arrayOfElementForIllumination.find((element)=>{
                     if (this.props.initialDataForTable.arrayOfObjects[i][j].id!== element) return false;
                     return element;
                 });
-                if(isElinArray !== undefined){this.arrayOfColorsForillumination[i][j] = '#e50b2f';}
-                else{this.arrayOfColorsForillumination[i][j] = ''}
+
+                // if(isElinArray !== undefined){this.arrayOfColorsForillumination[i][j] = '#e50b2f';}
+                // else{this.arrayOfColorsForillumination[i][j] = ''}
+
+                if(isElinArray !== undefined){
+                    if(this.arrayOfColorsForillumination[i][j]!=='#e50b2f'){
+                        this.arrayOfColorsForillumination[i][j]='#e50b2f';
+                        c = true;
+                    }
+                }
+                else{
+                    if(this.arrayOfColorsForillumination[i][j]!==''){
+                        this.arrayOfColorsForillumination[i][j]='';
+                        c = true;
+                    }
+                }
+
             }
+            this.cache[i] = c;
         }
     }
+
+
 
     onMouseOutCell(){
         this.takeBackColor();
@@ -152,7 +175,8 @@ class Table extends Component{
                            getPercent={this.getPercent}
                            onMouseOverSumBlock={this.onMouseOverSumBlock}
                            onMouseOutCell={this.onMouseOutCell}
-                           arrayOfColorsForillumination={this.arrayOfColorsForillumination}/>
+                           arrayOfColorsForillumination={this.arrayOfColorsForillumination}
+                            cache={this.cache}/>
         );
     }
 

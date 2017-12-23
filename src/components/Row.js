@@ -4,6 +4,9 @@ import Cell from './Cell.js';
 import SumCell from './SumCell.js';
 
 class Row extends Component{
+    shouldComponentUpdate(nextProps) {
+        return nextProps.cache === true && nextProps.cache !== undefined;
+    }
 
     render (){
         let Data =this.props.initialDataForTable;
@@ -12,11 +15,10 @@ class Row extends Component{
                 Data.arrayOfObjects[this.props.i].map((element, j)=>
                     <Cell initialDataForTable={this.props.initialDataForTable}
                           key={Data.arrayOfObjects[this.props.i][j].id}
-                          illuminationTable={this.props.illuminationTable}
+                          cellsColor={this.props.arrayOfColorsForillumination[this.props.i][j]}
                           onCellClick={this.props.onCellClick}
                           onMouseOverCell={this.props.onMouseOverCell}
                           getPercent={this.props.getPercent}
-                          onMouseOutCell={this.props.onMouseOutCell}
                           i={this.props.i}
                           j={j}/>
 

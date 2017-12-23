@@ -5,7 +5,7 @@ class Cell extends Component{
     prevAmount;
     shouldComponentUpdate(nextProps) {
         return !(this.prevAmount === nextProps.getPercent(this.props.i, this.props.j) &&
-            (nextProps.arrayOfColorsForillumination === this.props.arrayOfColorsForillumination));
+            (nextProps.cellsColor === this.props.cellsColor));
 
     }
 
@@ -15,7 +15,7 @@ class Cell extends Component{
         return(
             <td key={Data.arrayOfObjects[this.props.i][this.props.j].id}
                 id={Data.arrayOfObjects[this.props.i][this.props.j].id}
-                style={{background: this.props.arrayOfColorsForillumination}}
+                style={{background: this.props.cellsColor}}
                 onClick={(e)=>this.props.onCellClick(e,this.props.i,this.props.j)}
                 onMouseOver={(e)=>this.props.onMouseOverCell(e,this.props.i,this.props.j)}
             >
